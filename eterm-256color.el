@@ -5,7 +5,7 @@
 ;; URL: http://github.com/dieggsy/eterm-256color
 ;; Git-Repository: git://github.com/dieggsy/eterm-256color
 ;; Created: 2017-11-01
-;; Version: 0.1.0
+;; Version: 0.2.0
 ;; Keywords: faces
 ;; Package-Requires: ((emacs "25") (xterm-color "1.6"))
 
@@ -42,6 +42,18 @@
 (defgroup eterm-256color-faces nil
   "Faces for eterm-256color"
   :group 'eterm-256color)
+
+(defmacro eterm-256color-face-from-term (face-name)
+  (let* ((face-name-str (symbol-name face-name))
+         (color-noprefix (if (string= face-name-str "term")
+                             "default"
+                           (string-remove-prefix "term-color-" face-name-str))))
+    `(defface ,(intern (concat "eterm-256color-" color-noprefix))
+       ',(list (list t :inherit face-name))
+       ,(format "Face used to render %s color code." color-noprefix))))
+
+(cl-loop for color across ansi-term-color-vector
+         do (eval `(eterm-256color-face-from-term ,color)))
 
 (defface eterm-256color-light-black
   '((t :foreground "#686868" :background "#686868"))
@@ -92,6 +104,29 @@
 
 (dolist (j (number-sequence 16 255))
   (eval `(eterm-256color--define ,j ,(xterm-color--256 j))))
+
+(defvar eterm-256color-vector
+  (vconcat
+   [eterm-256color-default
+    eterm-256color-black
+    eterm-256color-red
+    eterm-256color-green
+    eterm-256color-yellow
+    eterm-256color-blue
+    eterm-256color-magenta
+    eterm-256color-cyan
+    eterm-256color-white
+    eterm-256color-light-black
+    eterm-256color-light-red
+    eterm-256color-light-green
+    eterm-256color-light-yellow
+    eterm-256color-light-blue
+    eterm-256color-light-magenta
+    eterm-256color-light-cyan
+    eterm-256color-light-white]
+   (mapcar (lambda (j)
+             (intern (concat "eterm-256color-" (number-to-string j))))
+           (number-sequence 16 255))))
 
 (defcustom eterm-256color-disable-bold t
   "Disable bold colors in eterm-256color.
@@ -187,10 +222,10 @@ Bold colors will be rendered as bright instead."
         (let ((color
                (if term-ansi-current-reverse
                    (face-foreground
-                    (elt ansi-term-color-vector term-ansi-current-color)
+                    (elt eterm-256color-vector term-ansi-current-color)
                     nil 'default)
                  (face-background
-                  (elt ansi-term-color-vector term-ansi-current-bg-color)
+                  (elt eterm-256color-vector term-ansi-current-bg-color)
                   nil 'default))))
           (setq term-current-face
                 (list :background color
@@ -199,11 +234,11 @@ Bold colors will be rendered as bright instead."
       (setq term-current-face
             (list :foreground
               (face-foreground
-               (elt ansi-term-color-vector term-ansi-current-color)
+               (elt eterm-256color-vector term-ansi-current-color)
                nil 'default)
               :background
               (face-background
-               (elt ansi-term-color-vector term-ansi-current-bg-color)
+               (elt eterm-256color-vector term-ansi-current-bg-color)
                nil 'default)
               :inverse-video term-ansi-current-reverse))
 
@@ -216,13 +251,13 @@ Bold colors will be rendered as bright instead."
         (let ((pos (cl-position
                     (plist-get term-current-face :foreground)
                     (mapcar (lambda (face) (face-foreground face nil 'default))
-                            (cl-subseq ansi-term-color-vector 1 9))
+                            (cl-subseq eterm-256color-vector 1 9))
                     :test #'string=)))
           (if pos
               (plist-put term-current-face
                          :foreground
                          (face-foreground
-                          (elt ansi-term-color-vector (+ pos 9)) nil 'default)))))
+                          (elt eterm-256color-vector (+ pos 9)) nil 'default)))))
 
       (when term-ansi-current-underline
         (setq term-current-face
@@ -256,27 +291,6 @@ Bold colors will be rendered as bright instead."
   (if eterm-256color-mode
       (progn
         (eterm-256color--maybe-tic)
-        (setq-local ansi-term-color-vector
-                    (vconcat
-                     [term
-                      term-color-black
-                      term-color-red
-                      term-color-green
-                      term-color-yellow
-                      term-color-blue
-                      term-color-magenta
-                      term-color-cyan
-                      term-color-white
-                      eterm-256color-light-black
-                      eterm-256color-light-red
-                      eterm-256color-light-green
-                      eterm-256color-light-yellow
-                      eterm-256color-light-blue
-                      eterm-256color-light-magenta
-                      eterm-256color-light-cyan
-                      eterm-256color-light-white]
-                     (mapcar (lambda (j) (intern (concat "eterm-256color-" (number-to-string j))))
-                             (number-sequence 16 255))))
         (setq-local term-term-name "eterm-256color")
         (setq-local term-termcap-format
                     "%s%s:li#%d:co#%d:cl=\\E[H\\E[J:cd=\\E[J:bs:am:xn:cm=\\E[%%i%%d;%%dH\
