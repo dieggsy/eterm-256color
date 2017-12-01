@@ -1,4 +1,4 @@
-* eterm-256color*
+* eterm-256color
 
 This package uses [[https://github.com/atomontage/xterm-color][xterm-color]] to add customizable 256 color support to ~term~
 and ~ansi-term~.
@@ -22,8 +22,8 @@ eterm-256color:
 
 ** Customization
 *** Bold
-- ~eterm-256color-disable-bold~ disable bold colors. Colors 0 - 15 will be
-  rendered with their "bright" counterpart instead.
+You can use the variable ~eterm-256color-disable-bold~ disable bold colors.
+Colors 0 - 15 will be rendered with their "bright" counterpart instead.
 *** Faces
 Each of the 256 faces is customizable:
 | Face                                       | Alias               | Note                                 |
