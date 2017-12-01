@@ -5,7 +5,7 @@
 ;; URL: http://github.com/dieggsy/eterm-256color
 ;; Git-Repository: git://github.com/dieggsy/eterm-256color
 ;; Created: 2017-11-01
-;; Version: 0.3.2
+;; Version: 0.3.3
 ;; Keywords: faces
 ;; Package-Requires: ((emacs "25") (xterm-color "1.6"))
 
@@ -288,7 +288,7 @@ This function supports 256 color sequences and bright colors."
 
 (defun eterm-256color--maybe-tic ()
   "If eterm-256color isn't a term type, tic eterm-256color.ti."
-  (when (not (directory-files-recursively "/usr/share/terminfo/" "eterm-256color"))
+  (when (not (directory-files-recursively "~/.terminfo" "eterm-256color"))
     (let ((package-path (or load-file-name buffer-file-name)))
       (when (or (not package-path)
                 (not (equal (file-name-nondirectory package-path)
