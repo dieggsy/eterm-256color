@@ -23,6 +23,9 @@ eterm-256color:
 (require 'eterm-256color)
 #+end_src
 
+If installing manually, make sure the file ~eterm-256color.ti~ is in the same
+place as ~eterm-256color.el~.
+
 ** Customization
 *** Bold
 You can use the variable ~eterm-256color-disable-bold~ disable bold colors.
