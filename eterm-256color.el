@@ -5,7 +5,7 @@
 ;; URL: http://github.com/dieggsy/eterm-256color
 ;; Git-Repository: git://github.com/dieggsy/eterm-256color
 ;; Created: 2017-11-01
-;; Version: 0.2.0
+;; Version: 0.2.1
 ;; Keywords: faces
 ;; Package-Requires: ((emacs "25") (xterm-color "1.6"))
 
@@ -139,7 +139,9 @@ Bold colors will be rendered as bright instead."
 (defvar term-terminal-previous-parameter-2 -1)
 
 (defun eterm-256color-handle-colors (parameter)
-  "Handle additional 256 color and bright color sequences specified by PARAMETER."
+  "Handle color sequences specified by PARAMETER.
+
+This function supports 256 color sequences and bright colors."
   (cond
    ;; 256
    ((and (= term-terminal-previous-parameter 5)
