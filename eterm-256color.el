@@ -5,7 +5,7 @@
 ;; URL: http://github.com/dieggsy/eterm-256color
 ;; Git-Repository: git://github.com/dieggsy/eterm-256color
 ;; Created: 2017-11-01
-;; Version: 0.2.1
+;; Version: 0.2.2
 ;; Keywords: faces
 ;; Package-Requires: ((emacs "25") (xterm-color "1.6"))
 
@@ -55,44 +55,44 @@
 (cl-loop for color across ansi-term-color-vector
          do (eval `(eterm-256color-face-from-term ,color)))
 
-(defface eterm-256color-light-black
+(defface eterm-256color-bright-black
   '((t :foreground "#686868" :background "#686868"))
-  "Face used to render black color code."
+  "Face used to render bright or bold black color code."
   :group 'eterm-256color-faces)
 
-(defface eterm-256color-light-red
+(defface eterm-256color-bright-red
   '((t :foreground "#fb4933" :background "#fb4933"))
-  "Face used to render black color code."
+  "Face used to render bright or bold red color code."
   :group 'eterm-256color-faces)
 
-(defface eterm-256color-light-green
+(defface eterm-256color-bright-green
   '((t :foreground "#b8bb26" :background "#b8bb26"))
-  "Face used to render black color code."
+  "Face used to render bright or bold green color code."
   :group 'eterm-256color-faces)
 
-(defface eterm-256color-light-yellow
+(defface eterm-256color-bright-yellow
   '((t :foreground "#fabd2f" :background "#fabd2f"))
-  "Face used to render black color code."
+  "Face used to render bright or bold yellow color code."
   :group 'eterm-256color-faces)
 
-(defface eterm-256color-light-blue
+(defface eterm-256color-bright-blue
   '((t :foreground "#83a598" :background "#83a598"))
-  "Face used to render black color code."
+  "Face used to render bright or bold blue color code."
   :group 'eterm-256color-faces)
 
-(defface eterm-256color-light-magenta
+(defface eterm-256color-bright-magenta
   '((t :foreground "#d3869b" :background "#d3869b"))
-  "Face used to render black color code."
+  "Face used to render bright or bold magenta color code."
   :group 'eterm-256color-faces)
 
-(defface eterm-256color-light-cyan
+(defface eterm-256color-bright-cyan
   '((t :foreground "#3fd7e5" :background "#3fd7e5"))
-  "Face used to render black color code."
+  "Face used to render bright or bold cyan color code."
   :group 'eterm-256color-faces)
 
-(defface eterm-256color-light-white
+(defface eterm-256color-bright-white
   '((t :foreground "#fdf4c1" :background "#fdf4c1"))
-  "Face used to render black color code."
+  "Face used to render bright or bold white color code."
   :group 'eterm-256color-faces)
 
 (defmacro eterm-256color--define (number color)
@@ -116,14 +116,14 @@
     eterm-256color-magenta
     eterm-256color-cyan
     eterm-256color-white
-    eterm-256color-light-black
-    eterm-256color-light-red
-    eterm-256color-light-green
-    eterm-256color-light-yellow
-    eterm-256color-light-blue
-    eterm-256color-light-magenta
-    eterm-256color-light-cyan
-    eterm-256color-light-white]
+    eterm-256color-bright-black
+    eterm-256color-bright-red
+    eterm-256color-bright-green
+    eterm-256color-bright-yellow
+    eterm-256color-bright-blue
+    eterm-256color-bright-magenta
+    eterm-256color-bright-cyan
+    eterm-256color-bright-white]
    (mapcar (lambda (j)
              (intern (concat "eterm-256color-" (number-to-string j))))
            (number-sequence 16 255))))
