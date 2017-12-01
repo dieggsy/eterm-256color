@@ -5,7 +5,7 @@
 ;; URL: http://github.com/dieggsy/eterm-256color
 ;; Git-Repository: git://github.com/dieggsy/eterm-256color
 ;; Created: 2017-11-01
-;; Version: 0.3.1
+;; Version: 0.3.2
 ;; Keywords: faces
 ;; Package-Requires: ((emacs "25") (xterm-color "1.6"))
 
@@ -103,7 +103,7 @@
 (put 'eterm-256color-5 'face-alias 'eterm-256color-magenta)
 (put 'eterm-256color-6 'face-alias 'eterm-256color-cyan)
 (put 'eterm-256color-7 'face-alias 'eterm-256color-white)
-(put 'eterm-256color-8 'face-alias 'eterm-256color-black)
+(put 'eterm-256color-8 'face-alias 'eterm-256color-bright-black)
 (put 'eterm-256color-9 'face-alias 'eterm-256color-bright-red)
 (put 'eterm-256color-10 'face-alias 'eterm-256color-bright-green)
 (put 'eterm-256color-11 'face-alias 'eterm-256color-bright-yellow)
