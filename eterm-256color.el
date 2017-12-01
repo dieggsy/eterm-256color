@@ -5,7 +5,7 @@
 ;; URL: http://github.com/dieggsy/eterm-256color
 ;; Git-Repository: git://github.com/dieggsy/eterm-256color
 ;; Created: 2017-11-01
-;; Version: 0.3.0
+;; Version: 0.3.1
 ;; Keywords: faces
 ;; Package-Requires: ((emacs "25") (xterm-color "1.6"))
 
@@ -97,20 +97,20 @@
 
 (put 'eterm-256color-0 'face-alias 'eterm-256color-black)
 (put 'eterm-256color-1 'face-alias 'eterm-256color-red)
-(put 'eterm-256color-3 'face-alias 'eterm-256color-green)
-(put 'eterm-256color-4 'face-alias 'eterm-256color-yellow)
-(put 'eterm-256color-5 'face-alias 'eterm-256color-blue)
-(put 'eterm-256color-6 'face-alias 'eterm-256color-magenta)
-(put 'eterm-256color-7 'face-alias 'eterm-256color-cyan)
-(put 'eterm-256color-8 'face-alias 'eterm-256color-white)
-(put 'eterm-256color-9 'face-alias 'eterm-256color-black)
-(put 'eterm-256color-10 'face-alias 'eterm-256color-bright-red)
-(put 'eterm-256color-11 'face-alias 'eterm-256color-bright-green)
-(put 'eterm-256color-12 'face-alias 'eterm-256color-bright-yellow)
-(put 'eterm-256color-13 'face-alias 'eterm-256color-bright-blue)
-(put 'eterm-256color-14 'face-alias 'eterm-256color-bright-magenta)
-(put 'eterm-256color-15 'face-alias 'eterm-256color-bright-cyan)
-(put 'eterm-256color-16 'face-alias 'eterm-256color-bright-white)
+(put 'eterm-256color-2 'face-alias 'eterm-256color-green)
+(put 'eterm-256color-3 'face-alias 'eterm-256color-yellow)
+(put 'eterm-256color-4 'face-alias 'eterm-256color-blue)
+(put 'eterm-256color-5 'face-alias 'eterm-256color-magenta)
+(put 'eterm-256color-6 'face-alias 'eterm-256color-cyan)
+(put 'eterm-256color-7 'face-alias 'eterm-256color-white)
+(put 'eterm-256color-8 'face-alias 'eterm-256color-black)
+(put 'eterm-256color-9 'face-alias 'eterm-256color-bright-red)
+(put 'eterm-256color-10 'face-alias 'eterm-256color-bright-green)
+(put 'eterm-256color-11 'face-alias 'eterm-256color-bright-yellow)
+(put 'eterm-256color-12 'face-alias 'eterm-256color-bright-blue)
+(put 'eterm-256color-13 'face-alias 'eterm-256color-bright-magenta)
+(put 'eterm-256color-14 'face-alias 'eterm-256color-bright-cyan)
+(put 'eterm-256color-15 'face-alias 'eterm-256color-bright-white)
 
 (defmacro eterm-256color--define (number color)
   "Define a face using COLOR for 256 color NUMBER."
