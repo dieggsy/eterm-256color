@@ -44,18 +44,19 @@
   "Faces for eterm-256color"
   :group 'eterm-256color)
 
-(defmacro eterm-256color-face-from-term (face-name)
+(defun eterm-256color-face-from-term (face-name)
   "Create an eterm-256color equivalent of term face FACE-NAME."
   (let* ((face-name-str (symbol-name face-name))
          (color-noprefix (if (string= face-name-str "term")
                              "default"
                            (string-remove-prefix "term-color-" face-name-str))))
-    `(defface ,(intern (concat "eterm-256color-" color-noprefix))
-       ',(list (list t :inherit face-name))
-       ,(format "Face used to render %s color code." color-noprefix))))
+    (custom-declare-face (intern (concat "eterm-256color-" color-noprefix))
+                         `((t :inherit ,face-name))
+                         (format "Face used to render %s color code." color-noprefix)
+                         :group 'eterm-256color)))
 
 (cl-loop for color across ansi-term-color-vector
-         do (eval `(eterm-256color-face-from-term ,color)))
+         do (eterm-256color-face-from-term color))
 
 (defface eterm-256color-bright-black
   '((t :foreground "#686868" :background "#686868"))
@@ -114,15 +115,15 @@
 (put 'eterm-256color-14 'face-alias 'eterm-256color-bright-cyan)
 (put 'eterm-256color-15 'face-alias 'eterm-256color-bright-white)
 
-(defmacro eterm-256color--define (number color)
+(defun eterm-256color--define-face (number color)
   "Define a face using COLOR for 256 color NUMBER."
-  `(defface ,(intern (concat "eterm-256color-" (number-to-string number)))
-     '((t :foreground ,color :background ,color))
-     (format "Color %s" ,number)
-     :group 'eterm-256color-faces))
+  (custom-declare-face (intern (concat "eterm-256color-" (number-to-string number)))
+                       `((t :foreground ,color :background ,color))
+                       (format "Color %s" number)
+                       :group 'etrm))
 
 (dolist (j (number-sequence 16 255))
-  (eval `(eterm-256color--define ,j ,(xterm-color--256 j))))
+  (eterm-256color--define-face j (xterm-color--256 j)))
 
 (defvar eterm-256color-vector
   (vconcat
