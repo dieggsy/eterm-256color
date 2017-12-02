@@ -44,6 +44,7 @@
   :group 'eterm-256color)
 
 (defmacro eterm-256color-face-from-term (face-name)
+  "Create an eterm-256color equivalent of term face FACE-NAME."
   (let* ((face-name-str (symbol-name face-name))
          (color-noprefix (if (string= face-name-str "term")
                              "default"
