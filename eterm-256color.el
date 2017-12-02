@@ -299,7 +299,7 @@ This function supports 256 color sequences and bright colors."
         (setq package-path (locate-library "eterm-256color.el")))
       (start-process-shell-command
        "eterm-256color (tic)"
-       nil
+       " *eterm-256color (tic)*"
        (format "tic %s"
                (expand-file-name
                 "eterm-256color.ti"
