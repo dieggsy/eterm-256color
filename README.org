@@ -33,7 +33,8 @@ place as ~eterm-256color.el~.
 ** Customization
 *** Bold
 You can use the variable ~eterm-256color-disable-bold~ disable bold colors.
-Colors 0 - 15 will be rendered with their "bright" counterpart instead.
+When specified as bold, colors 0 - 7 will be rendered with their "bright"
+counterpart instead.
 *** Faces
 Each of the 256 faces is customizable:
 | Face                                       | Alias               | Note                                 |
