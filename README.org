@@ -10,8 +10,12 @@ Add ~eterm-256color-mode~ to ~term-mode-hook~:
 #+end_src
 Enjoy more colors.
 
-*Note*: Make sure ~$TERM~ really does get set to ~eterm-256color~. It may be
-overridden if you export ~TERM~ in any of your shell init files.
+*** Notes
+- You may have to restart ansi-term the very first time you start it after
+  installing this package and adding the hook above - it should "just work" any
+  time after that.
+- Make sure ~TERM~ really gets set to ~eterm-256color~. It may be
+  overridden if you export ~TERM~ in any of your shell init files.
 
 ** Installation
 This package isn't on melpa yet. Consider installing with [[https://github.com/raxod502/straight.el][straight.el]] or
