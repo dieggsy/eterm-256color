@@ -40,6 +40,15 @@
   "256colors for term."
   :group 'term)
 
+(defcustom eterm-256color-terminfo-path (pcase system-type
+                            ('darwin "~/.terminfo/65/eterm-256color")
+                            (_ "~/.terminfo/e/eterm-256color"))
+  "Path where terminfo should be installed.
+If there is no file in this path, `eterm-256color-mode will
+prompt to install the terminfo."
+  :group 'eterm-256color
+  :type 'string)
+
 (defgroup eterm-256color-faces nil
   "Faces for eterm-256color"
   :group 'eterm-256color)
@@ -291,7 +300,7 @@ This function supports 256 color sequences and bright colors."
 
 (defun eterm-256color-compile ()
   "If eterm-256color isn't a term type, tic eterm-256color.ti."
-  (unless (file-exists-p "~/.terminfo/e/eterm-256color")
+  (unless (file-exists-p eterm-256color-terminfo-path)
     (when (y-or-n-p "eterm-256color requires compilation of eterm-256color.ti.
 Term may need to be restarted. Compile now?: ")
       (let ((package-path (or load-file-name buffer-file-name)))
