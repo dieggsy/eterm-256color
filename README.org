@@ -1,4 +1,6 @@
 * eterm-256color
+[[https://melpa.org/#/eterm-256color][file:https://melpa.org/packages/eterm-256color-badge.svg]]
+[[https://stable.melpa.org/#/eterm-256color][file:https://stable.melpa.org/packages/eterm-256color-badge.svg]]
 
 This package uses [[https://github.com/atomontage/xterm-color][xterm-color]] to add customizable 256 color support to ~term~
 and ~ansi-term~.
@@ -18,7 +20,15 @@ Enjoy more colors.
   overridden if you export ~TERM~ in any of your shell init files.
 
 ** Installation
-This package isn't on melpa yet. Consider installing with [[https://github.com/raxod502/straight.el][straight.el]] or
+This package is on melpa. If you have melpa in your package repositiories, you
+can use ~M-x RET package-install RET eterm-256color~ or install with
+[[https://github.com/jwiegley/use-package][use-package]]:
+#+begin_src emacs-lisp
+(use-package eterm-256color
+  :ensure t)
+#+end_src
+
+Alternatively, consider installing with [[https://github.com/raxod502/straight.el][straight.el]] or
 [[https://github.com/quelpa/quelpa-use-package][quelpa-use-package]].
 
 Otherwise, download the files to somewhere in your load path, and require
