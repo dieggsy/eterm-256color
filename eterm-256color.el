@@ -5,7 +5,7 @@
 ;; URL: http://github.com/dieggsy/eterm-256color
 ;; Git-Repository: git://github.com/dieggsy/eterm-256color
 ;; Created: 2017-11-01
-;; Version: 0.3.8
+;; Version: 0.3.10
 ;; Keywords: faces
 ;; Package-Requires: ((emacs "24.4") (xterm-color "1.6") (f "0.19.0"))
 
@@ -41,6 +41,13 @@
 (defgroup eterm-256color nil
   "256colors for term."
   :group 'term)
+
+(defcustom eterm-256color-disable-bold t
+  "Disable bold colors in eterm-256color.
+
+Bold colors will be rendered as bright instead."
+  :group 'eterm-256color
+  :type 'boolean)
 
 (defgroup eterm-256color-faces nil
   "Faces for eterm-256color"
@@ -149,13 +156,6 @@
    (mapcar (lambda (j)
              (intern (concat "eterm-256color-" (number-to-string j))))
            (number-sequence 16 255))))
-
-(defcustom eterm-256color-disable-bold t
-  "Disable bold colors in eterm-256color.
-
-Bold colors will be rendered as bright instead."
-  :group 'eterm-256color
-  :type 'boolean)
 
 (defvar term-terminal-previous-parameter)
 (defvar term-terminal-previous-parameter-2 -1)
