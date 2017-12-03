@@ -13,6 +13,16 @@ Add ~eterm-256color-mode~ to ~term-mode-hook~:
 Enjoy more colors.
 
 *** Notes
+- You may have to install the ~eterm-color~ terminfo if you have not already. On
+  macOS depending on how you installed, you can try:
+
+#+BEGIN_SRC shell
+tic -o ~/.terminfo $(find $(brew --prefix emacs)/ -name 'eterm-color.ti')
+# or
+tic -o ~/.terminfo $(find $(brew --prefix emacs-plus)/ -name 'eterm-color.ti')
+# or
+tic -o ~/.terminfo /Applications/Emacs.app/Contents/Resources/etc/e/eterm-color.ti
+#+END_SRC
 - You may have to restart ansi-term the very first time you start it after
   installing this package and adding the hook above - it should "just work" any
   time after that.
