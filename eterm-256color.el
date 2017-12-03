@@ -289,22 +289,19 @@ This function supports 256 color sequences and bright colors."
   ;; FIXME: shouldn't we set term-ansi-face-already-done to t here?  --Stef
   (setq term-ansi-face-already-done nil))
 
-(defun eterm-256color--maybe-tic ()
+;;;###autoload
+(defun eterm-256color-compile ()
   "If eterm-256color isn't a term type, tic eterm-256color.ti."
-  (unless (and (file-exists-p "~/.terminfo")
-               (directory-files-recursively "~/.terminfo" "eterm-256color"))
+  (unless (file-exists-p "~/.terminfo/e/eterm-256color")
     (let ((package-path (or load-file-name buffer-file-name)))
       (when (or (not package-path)
                 (not (equal (file-name-nondirectory package-path)
                             "eterm-256color.el")))
         (setq package-path (locate-library "eterm-256color.el")))
-      (start-process-shell-command
-       "eterm-256color (tic)"
-       " *eterm-256color (tic)*"
-       (format "tic %s"
-               (expand-file-name
-                "eterm-256color.ti"
-                (file-name-directory package-path)))))))
+      (compilation-start
+       (format "tic -s %s" (expand-file-name
+                            "eterm-256color.ti"
+                            (file-name-directory package-path)))))))
 
 ;;;###autoload
 (define-minor-mode eterm-256color-mode
@@ -313,7 +310,7 @@ This function supports 256 color sequences and bright colors."
   :group 'eterm-256color
   (if eterm-256color-mode
       (progn
-        (eterm-256color--maybe-tic)
+        (eterm-256color-compile)
         (setq-local term-term-name "eterm-256color")
         (setq-local term-termcap-format
                     "%s%s:li#%d:co#%d:cl=\\E[H\\E[J:cd=\\E[J:bs:am:xn:cm=\\E[%%i%%d;%%dH\
