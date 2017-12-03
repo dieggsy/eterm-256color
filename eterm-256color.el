@@ -7,7 +7,7 @@
 ;; Created: 2017-11-01
 ;; Version: 0.3.8
 ;; Keywords: faces
-;; Package-Requires: ((emacs "24.4") (xterm-color "1.6"))
+;; Package-Requires: ((emacs "24.4") (xterm-color "1.6") (f "0.19.0"))
 
 ;; This file is not part of GNU Emacs.
 
@@ -34,6 +34,8 @@
 (require 'cl-lib)
 (require 'xterm-color)
 (require 'term)
+(require 'f)
+(require 'url-handlers)
 (eval-when-compile (require 'subr-x))
 
 (defgroup eterm-256color nil
@@ -289,20 +291,54 @@ This function supports 256 color sequences and bright colors."
   ;; FIXME: shouldn't we set term-ansi-face-already-done to t here?  --Stef
   (setq term-ansi-face-already-done nil))
 
+(defun eterm-256color-term-exists-p (term)
+  "Check whether term type TERM exists, per the tic man page."
+  (let ((checker (lambda (file)
+                   (let (case-fold-search)
+                     (string= term (f-filename file)))))
+        (terminfo-dir (getenv "TERMINFO"))
+        (terminfo-dirs (getenv "TERMINFO_DIRS")))
+    (or (when (and terminfo-dir (file-exists-p terminfo-dir))
+          (f-entries terminfo-dir checker 'recursive))
+        (and (file-exists-p "~/.terminfo")
+             (f-entries "~/.terminfo" checker 'recursive))
+        (when terminfo-dirs
+          (cl-loop for dir in (split-string terminfo-dirs ":")
+                   as result = (and (file-exists-p dir)
+                                    (f-entries dir checker 'recursive))
+                   return result))
+        (and (file-exists-p "/usr/share/terminfo")
+             (f-entries "/usr/share/terminfo" checker 'recursive)))))
+
 (defun eterm-256color-compile ()
-  "If eterm-256color isn't a term type, tic eterm-256color.ti."
-  (unless (file-exists-p "~/.terminfo/e/eterm-256color")
-    (when (y-or-n-p "eterm-256color requires compilation of eterm-256color.ti.
-Term may need to be restarted. Compile now?: ")
-      (let ((package-path (or load-file-name buffer-file-name)))
-        (when (or (not package-path)
-                  (not (equal (file-name-nondirectory package-path)
-                              "eterm-256color.el")))
-          (setq package-path (locate-library "eterm-256color.el")))
+  "If eterm-256color isn't a term type, tic eterm-256color.ti.
+
+If eterm-color doesn't exist, prompt to fetch and compile it."
+  (unless (eterm-256color-term-exists-p "eterm-256color")
+    (if (eterm-256color-term-exists-p "eterm-color")
+        (when (y-or-n-p "eterm-256color-mode requires compilation of eterm-256color.ti.
+Term may need to be restarted. Compile now? ")
+          (let ((package-path (or load-file-name buffer-file-name)))
+            (when (or (not package-path)
+                      (not (equal (file-name-nondirectory package-path)
+                                  "eterm-256color.el")))
+              (setq package-path (locate-library "eterm-256color.el")))
+            (compilation-start
+             (format "tic -s %s" (expand-file-name
+                                  "eterm-256color.ti"
+                                  (file-name-directory package-path))))))
+      (when (y-or-n-p "It seems you don't have the required term type 'eterm-color'.
+Fetch from github.com/emacs-mirror/emacs and compile? ")
+        (url-copy-file "https://raw.githubusercontent.com/emacs-mirror/emacs/master/etc/e/eterm-color.ti"
+                       (expand-file-name
+                        "eterm-color.ti"
+                        temporary-file-directory)
+                       'ok-if-already-exists)
         (compilation-start
-         (format "tic -s %s" (expand-file-name
-                              "eterm-256color.ti"
-                              (file-name-directory package-path))))))))
+         (format "tic -s %s"
+                 (expand-file-name
+                  "eterm-color.ti"
+                  temporary-file-directory)))))))
 
 ;;;###autoload
 (define-minor-mode eterm-256color-mode
