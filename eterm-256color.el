@@ -289,19 +289,20 @@ This function supports 256 color sequences and bright colors."
   ;; FIXME: shouldn't we set term-ansi-face-already-done to t here?  --Stef
   (setq term-ansi-face-already-done nil))
 
-;;;###autoload
 (defun eterm-256color-compile ()
   "If eterm-256color isn't a term type, tic eterm-256color.ti."
   (unless (file-exists-p "~/.terminfo/e/eterm-256color")
-    (let ((package-path (or load-file-name buffer-file-name)))
-      (when (or (not package-path)
-                (not (equal (file-name-nondirectory package-path)
-                            "eterm-256color.el")))
-        (setq package-path (locate-library "eterm-256color.el")))
-      (compilation-start
-       (format "tic -s %s" (expand-file-name
-                            "eterm-256color.ti"
-                            (file-name-directory package-path)))))))
+    (when (y-or-n-p "eterm-256color requires compilation of eterm-256color.ti.
+Term may need to be restarted. Compile now?: ")
+      (let ((package-path (or load-file-name buffer-file-name)))
+        (when (or (not package-path)
+                  (not (equal (file-name-nondirectory package-path)
+                              "eterm-256color.el")))
+          (setq package-path (locate-library "eterm-256color.el")))
+        (compilation-start
+         (format "tic -s %s" (expand-file-name
+                              "eterm-256color.ti"
+                              (file-name-directory package-path))))))))
 
 ;;;###autoload
 (define-minor-mode eterm-256color-mode
