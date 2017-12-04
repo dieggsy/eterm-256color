@@ -62,7 +62,7 @@ Bold colors will be rendered as bright instead."
     (custom-declare-face (intern (concat "eterm-256color-" color-noprefix))
                          `((t :inherit ,face-name))
                          (format "Face used to render %s color code." color-noprefix)
-                         :group 'eterm-256color)))
+                         :group 'eterm-256color-faces)))
 
 (cl-loop for color across ansi-term-color-vector
          do (eterm-256color-face-from-term color))
@@ -129,7 +129,7 @@ Bold colors will be rendered as bright instead."
   (custom-declare-face (intern (concat "eterm-256color-" (number-to-string number)))
                        `((t :foreground ,color :background ,color))
                        (format "Color %s" number)
-                       :group 'etrm))
+                       :group 'eterm-256color-faces))
 
 (dolist (j (number-sequence 16 255))
   (eterm-256color--define-face j (xterm-color--256 j)))
