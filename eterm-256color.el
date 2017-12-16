@@ -5,7 +5,7 @@
 ;; URL: http://github.com/dieggsy/eterm-256color
 ;; Git-Repository: git://github.com/dieggsy/eterm-256color
 ;; Created: 2017-11-01
-;; Version: 0.3.10
+;; Version: 0.3.11
 ;; Keywords: faces
 ;; Package-Requires: ((emacs "24.4") (xterm-color "1.6") (f "0.19.0"))
 
@@ -97,15 +97,16 @@ Bold colors will be rendered as bright instead."
 (put 'eterm-256color-14 'face-alias 'eterm-256color-bright-cyan)
 (put 'eterm-256color-15 'face-alias 'eterm-256color-bright-white)
 
-(defun eterm-256color--define-face (number color)
+(defun eterm-256color--define-face (number)
   "Define a face using COLOR for 256 color NUMBER."
-  (custom-declare-face (intern (concat "eterm-256color-" (number-to-string number)))
-                       `((t :foreground ,color :background ,color))
-                       (format "Color %s" number)
-                       :group 'eterm-256color-faces))
+  (let ((color (xterm-color--256 number)))
+    (custom-declare-face (intern (concat "eterm-256color-" (number-to-string number)))
+                         `((t :foreground ,color :background ,color))
+                         (format "Color %s" number)
+                         :group 'eterm-256color-faces)))
 
 (dolist (j (number-sequence 16 255))
-  (eterm-256color--define-face j (xterm-color--256 j)))
+  (eterm-256color--define-face j))
 
 (defvar eterm-256color-vector
   (vconcat
