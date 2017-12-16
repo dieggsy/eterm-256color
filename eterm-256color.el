@@ -53,59 +53,32 @@ Bold colors will be rendered as bright instead."
   "Faces for eterm-256color"
   :group 'eterm-256color)
 
-(defun eterm-256color-face-from-term (face-name)
-  "Create an eterm-256color equivalent of term face FACE-NAME."
-  (let* ((face-name-str (symbol-name face-name))
-         (color-noprefix (if (string= face-name-str "term")
-                             "default"
-                           (string-remove-prefix "term-color-" face-name-str))))
-    (custom-declare-face (intern (concat "eterm-256color-" color-noprefix))
-                         `((t :inherit ,face-name))
-                         (format "Face used to render %s color code." color-noprefix)
-                         :group 'eterm-256color-faces)))
-
-(cl-loop for color across ansi-term-color-vector
-         do (eterm-256color-face-from-term color))
-
-(defface eterm-256color-bright-black
-  '((t :foreground "#686868" :background "#686868"))
-  "Face used to render bright or bold black color code."
+(defface eterm-256color-default
+  '((t :inherit default))
+  "Default face to use in term mode."
   :group 'eterm-256color-faces)
 
-(defface eterm-256color-bright-red
-  '((t :foreground "#fb4933" :background "#fb4933"))
-  "Face used to render bright or bold red color code."
-  :group 'eterm-256color-faces)
+(defvar eterm-256color-base16-names
+  '("black" "red" "green" "yellow" "blue" "magenta" "cyan" "white"))
 
-(defface eterm-256color-bright-green
-  '((t :foreground "#b8bb26" :background "#b8bb26"))
-  "Face used to render bright or bold green color code."
-  :group 'eterm-256color-faces)
+;; Generate first 8
+(cl-loop for name in eterm-256color-base16-names
+         as i = 0 then (1+ i)
+         as color = (xterm-color--256 i)
+         do (custom-declare-face (intern (concat "eterm-256color-" name))
+                                 `((t :foreground ,color :background ,color))
+                                 (format "Face used to render %s color code." name)
+                                 :group 'eterm-256color-faces))
 
-(defface eterm-256color-bright-yellow
-  '((t :foreground "#fabd2f" :background "#fabd2f"))
-  "Face used to render bright or bold yellow color code."
-  :group 'eterm-256color-faces)
-
-(defface eterm-256color-bright-blue
-  '((t :foreground "#83a598" :background "#83a598"))
-  "Face used to render bright or bold blue color code."
-  :group 'eterm-256color-faces)
-
-(defface eterm-256color-bright-magenta
-  '((t :foreground "#d3869b" :background "#d3869b"))
-  "Face used to render bright or bold magenta color code."
-  :group 'eterm-256color-faces)
-
-(defface eterm-256color-bright-cyan
-  '((t :foreground "#3fd7e5" :background "#3fd7e5"))
-  "Face used to render bright or bold cyan color code."
-  :group 'eterm-256color-faces)
-
-(defface eterm-256color-bright-white
-  '((t :foreground "#fdf4c1" :background "#fdf4c1"))
-  "Face used to render bright or bold white color code."
-  :group 'eterm-256color-faces)
+;; Generate bright colors
+(cl-loop for name in eterm-256color-base16-names
+         as i = 8 then (1+ i)
+         as color = (xterm-color--256 i)
+         do (custom-declare-face
+             (intern (concat "eterm-256color-bright-" name))
+             `((t :foreground ,color :background ,color))
+             (format "Face used to render bright or bold %s color code." name)
+             :group 'eterm-256color-faces))
 
 (put 'eterm-256color-0 'face-alias 'eterm-256color-black)
 (put 'eterm-256color-1 'face-alias 'eterm-256color-red)
