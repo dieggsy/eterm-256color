@@ -65,7 +65,7 @@ When specified as bold, colors 0 - 7 will be rendered with their "bright"
 counterpart instead.
 *** Faces
 Each of the 256 faces is customizable:
-| Face                                       | Alias               | Note                                      |
+| Face                                       | Alias               | Default Value                             |
 |--------------------------------------------+---------------------+-------------------------------------------|
 | ~eterm-256color-default~                   |                     | Inherited from ~default~ face             |
 | ~eterm-256color-black~                     | ~eterm-256color-0~  | Inherited from ~xterm-color-names~        |
