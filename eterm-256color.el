@@ -64,7 +64,7 @@ Bold colors will be rendered as bright instead."
 ;; Generate first 8
 (cl-loop for name in eterm-256color-base16-names
          as i = 0 then (1+ i)
-         as color = (xterm-color--256 i)
+         as color = (xterm-color-256 i)
          do (custom-declare-face (intern (concat "eterm-256color-" name))
                                  `((t :foreground ,color :background ,color))
                                  (format "Face used to render %s color code." name)
@@ -73,7 +73,7 @@ Bold colors will be rendered as bright instead."
 ;; Generate bright colors
 (cl-loop for name in eterm-256color-base16-names
          as i = 8 then (1+ i)
-         as color = (xterm-color--256 i)
+         as color = (xterm-color-256 i)
          do (custom-declare-face
              (intern (concat "eterm-256color-bright-" name))
              `((t :foreground ,color :background ,color))
@@ -99,7 +99,7 @@ Bold colors will be rendered as bright instead."
 
 (defun eterm-256color--define-face (number)
   "Define a face using COLOR for 256 color NUMBER."
-  (let ((color (xterm-color--256 number)))
+  (let ((color (xterm-color-256 number)))
     (custom-declare-face (intern (concat "eterm-256color-" (number-to-string number)))
                          `((t :foreground ,color :background ,color))
                          (format "Color %s" number)
