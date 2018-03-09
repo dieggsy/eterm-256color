@@ -5,9 +5,9 @@
 ;; URL: http://github.com/dieggsy/eterm-256color
 ;; Git-Repository: git://github.com/dieggsy/eterm-256color
 ;; Created: 2017-11-01
-;; Version: 0.3.11
+;; Version: 0.3.13
 ;; Keywords: faces
-;; Package-Requires: ((emacs "24.4") (xterm-color "1.6") (f "0.19.0"))
+;; Package-Requires: ((emacs "24.4") (xterm-color "1.7") (f "0.19.0"))
 
 ;; This file is not part of GNU Emacs.
 
