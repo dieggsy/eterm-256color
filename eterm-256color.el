@@ -65,37 +65,29 @@ Bold colors will be rendered as bright instead."
 (cl-loop for name in eterm-256color-base16-names
          as i = 0 then (1+ i)
          as color = (xterm-color-256 i)
-         do (custom-declare-face (intern (concat "eterm-256color-" name))
-                                 `((t :foreground ,color :background ,color))
-                                 (format "Face used to render %s color code." name)
-                                 :group 'eterm-256color-faces))
+         do (let ((face-name (intern (concat "eterm-256color-" name)))
+                  (alias (intern
+                          (concat "eterm-256color-" (number-to-string i)))))
+              (custom-declare-face
+               face-name
+               `((t :foreground ,color :background ,color))
+               (format "Face used to render %s color code." name)
+               :group 'eterm-256color-faces)
+              (put alias 'face-alias face-name)))
 
 ;; Generate bright colors
 (cl-loop for name in eterm-256color-base16-names
          as i = 8 then (1+ i)
          as color = (xterm-color-256 i)
-         do (custom-declare-face
-             (intern (concat "eterm-256color-bright-" name))
-             `((t :foreground ,color :background ,color))
-             (format "Face used to render bright or bold %s color code." name)
-             :group 'eterm-256color-faces))
-
-(put 'eterm-256color-0 'face-alias 'eterm-256color-black)
-(put 'eterm-256color-1 'face-alias 'eterm-256color-red)
-(put 'eterm-256color-2 'face-alias 'eterm-256color-green)
-(put 'eterm-256color-3 'face-alias 'eterm-256color-yellow)
-(put 'eterm-256color-4 'face-alias 'eterm-256color-blue)
-(put 'eterm-256color-5 'face-alias 'eterm-256color-magenta)
-(put 'eterm-256color-6 'face-alias 'eterm-256color-cyan)
-(put 'eterm-256color-7 'face-alias 'eterm-256color-white)
-(put 'eterm-256color-8 'face-alias 'eterm-256color-bright-black)
-(put 'eterm-256color-9 'face-alias 'eterm-256color-bright-red)
-(put 'eterm-256color-10 'face-alias 'eterm-256color-bright-green)
-(put 'eterm-256color-11 'face-alias 'eterm-256color-bright-yellow)
-(put 'eterm-256color-12 'face-alias 'eterm-256color-bright-blue)
-(put 'eterm-256color-13 'face-alias 'eterm-256color-bright-magenta)
-(put 'eterm-256color-14 'face-alias 'eterm-256color-bright-cyan)
-(put 'eterm-256color-15 'face-alias 'eterm-256color-bright-white)
+         do (let ((face-name (intern (concat "eterm-256color-bright-" name)))
+                  (alias (intern
+                          (concat "eterm-256color-" (number-to-string i)))))
+              (custom-declare-face
+               face-name
+               `((t :foreground ,color :background ,color))
+               (format "Face used to render bright or bold %s color code." name)
+               :group 'eterm-256color-faces)
+              (put alias 'face-alias face-name)))
 
 (defun eterm-256color--define-face (number)
   "Define a face using COLOR for 256 color NUMBER."
