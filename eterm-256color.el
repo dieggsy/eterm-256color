@@ -131,25 +131,48 @@ Bold colors will be rendered as bright instead."
              (intern (concat "eterm-256color-" (number-to-string j))))
            (number-sequence 16 255))))
 
-(defvar term-terminal-previous-parameter)
-(defvar term-terminal-previous-parameter-2 -1)
+(defun eterm-256color-handle-ansi-escape (handle-fun &rest args)
+  (pcase-let
+      (((or ;; Parameters from Emacs 27.
+         `(,proc ,params ,char)
+         ;; Parameters up to Emacs 26.
+         (and
+          `(,proc ,char)
+          (let params
+            ;; Hack the dynamic vars into a list.
+            (delq nil
+                  (delq -1
+                        (list
+                         (bound-and-true-p term-terminal-previous-parameter-4)
+                         (bound-and-true-p term-terminal-previous-parameter-3)
+                         (bound-and-true-p term-terminal-previous-parameter-2)
+                         (bound-and-true-p term-terminal-previous-parameter)
+                         (bound-and-true-p term-terminal-parameter)))))))
+        args))
+    (if (eq char '?m)
+        (while params
+          (pcase params
+            (`(38 5 ,color256 . ,_)
+             (eterm-256color-handle-colors color256 'fg)
+             (setq params (nthcdr 3 params)))
+            (`(48 5 ,color256 . ,_)
+             (eterm-256color-handle-colors color256 'bg)
+             (setq params (nthcdr 3 params)))
+            (`(,x . ,_)
+             (eterm-256color-handle-colors x)
+             (setq params (cdr params)))))
+      (apply handle-fun args))))
 
-(defun eterm-256color-handle-colors (parameter)
+(defun eterm-256color-handle-colors (parameter &optional layer256)
   "Handle color sequences specified by PARAMETER.
 
 This function supports 256 color sequences and bright colors."
   (cond
    ;; 256
-   ((and (= term-terminal-previous-parameter 5)
-         (= term-terminal-previous-parameter-2 38)
-         (>= parameter 0)
-         (<= parameter 255))
+   ((eq layer256 'fg)
     (setq term-ansi-current-color (+ parameter 1)))
 
-   ((and (= term-terminal-previous-parameter 5)
-         (= term-terminal-previous-parameter-2 48)
-         (>= parameter 0)
-         (<= parameter 255))
+   ((eq layer256 'bg)
     (setq term-ansi-current-bg-color (+ parameter 1)))
 
    ;; Bold  (terminfo: bold)
@@ -196,7 +219,6 @@ This function supports 256 color sequences and bright colors."
    ;; Background
    ((and (>= parameter 40) (<= parameter 47))
     (setq term-ansi-current-bg-color (- parameter 39)))
-
 
    ;; Reset background
    ((eq parameter 49)
@@ -334,10 +356,10 @@ Fetch from github.com/emacs-mirror/emacs and compile? ")
 :mk=\\E[8m:cb=\\E[1K:op=\\E[39;49m:Co#256:pa#32767:AB=\\E[48;5;%%dm:AF=\\E[38;5;%%dm:cr=^M\
 :bl=^G:do=^J:le=^H:ta=^I:se=\\E[27m:ue=\\E[24m\
 :kb=^?:kD=^[[3~:sc=\\E7:rc=\\E8:r1=\\Ec:")
-        (advice-add 'term-handle-colors-array :override #'eterm-256color-handle-colors))
+        (advice-add 'term-handle-ansi-escape :around #'eterm-256color-handle-ansi-escape))
     (kill-local-variable 'term-term-name)
     (kill-local-variable 'term-termcap-format)
-    (advice-remove 'term-handle-colors-array #'eterm-256color-handle-colors)))
+    (advice-remove 'term-handle-ansi-escape #'eterm-256color-handle-ansi-escape)))
 
 (provide 'eterm-256color)
 
