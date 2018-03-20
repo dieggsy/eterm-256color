@@ -143,17 +143,20 @@ Bold colors will be rendered as bright instead."
         args))
     (if (eq char '?m)
         (while params
-          (pcase params
-            (`(38 5 ,color256 . ,_)
-             (eterm-256color-handle-colors color256 'fg)
-             (setq params (nthcdr 3 params)))
-            (`(48 5 ,color256 . ,_)
-             (eterm-256color-handle-colors color256 'bg)
-             (setq params (nthcdr 3 params)))
-            (`(,x . ,_)
-             (eterm-256color-handle-colors x)
-             (setq params (cdr params)))))
-      (apply handle-fun args))))
+          (let ((p0 (nth 0 params))
+                (p1 (nth 1 params))
+                (p2 (nth 2 params)))
+            (cond
+             ((and (eq p0 38) (eq p1 5) p2)
+              (eterm-256color-handle-colors p2 'fg)
+              (setq params (nthcdr 3 params)))
+             ((and (eq p0 48) (eq p1 5) p2)
+              (eterm-256color-handle-colors p2 'bg)
+              (setq params (nthcdr 3 params)))
+             (t
+              (eterm-256color-handle-colors p0)
+              (setq params (cdr params))))))
+      (apply handle-fun (list proc params char)))))
 
 (defun eterm-256color-handle-colors (parameter &optional layer256)
   "Handle color sequences specified by PARAMETER.
