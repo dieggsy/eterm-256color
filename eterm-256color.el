@@ -203,6 +203,10 @@ This function supports 256 color sequences and bright colors."
    ((eq parameter 39)
     (setq term-ansi-current-color 0))
 
+   ;; ADDITION
+   ((and (>= parameter 100) (<= parameter 107))
+    (setq term-ansi-current-bg-color (- parameter 91)))
+
    ;; Background
    ((and (>= parameter 40) (<= parameter 47))
     (setq term-ansi-current-bg-color (- parameter 39)))
