@@ -85,17 +85,19 @@ Bold colors will be rendered as bright instead."
               (custom-declare-face
                face-name
                `((t :foreground ,color :background ,color))
-               (format "Face used to render bright or bold %s color code." name)
+               (format "Face used to render bright or bold %s color code."
+                       name)
                :group 'eterm-256color-faces)
               (put alias 'face-alias face-name)))
 
 (defun eterm-256color--define-face (number)
   "Define a face using COLOR for 256 color NUMBER."
   (let ((color (xterm-color-256 number)))
-    (custom-declare-face (intern (concat "eterm-256color-" (number-to-string number)))
-                         `((t :foreground ,color :background ,color))
-                         (format "Color %s" number)
-                         :group 'eterm-256color-faces)))
+    (custom-declare-face
+     (intern (concat "eterm-256color-" (number-to-string number)))
+     `((t :foreground ,color :background ,color))
+     (format "Color %s" number)
+     :group 'eterm-256color-faces)))
 
 (dolist (j (number-sequence 16 255))
   (eterm-256color--define-face j))
