@@ -104,23 +104,13 @@ Bold colors will be rendered as bright instead."
 
 (defvar eterm-256color-vector
   (vconcat
-   [eterm-256color-default
-    eterm-256color-black
-    eterm-256color-red
-    eterm-256color-green
-    eterm-256color-yellow
-    eterm-256color-blue
-    eterm-256color-magenta
-    eterm-256color-cyan
-    eterm-256color-white
-    eterm-256color-bright-black
-    eterm-256color-bright-red
-    eterm-256color-bright-green
-    eterm-256color-bright-yellow
-    eterm-256color-bright-blue
-    eterm-256color-bright-magenta
-    eterm-256color-bright-cyan
-    eterm-256color-bright-white]
+   [eterm-256color-default]
+   (mapcar (lambda (name)
+             (intern (concat "eterm-256color-" name)))
+           eterm-256color-base16-names)
+   (mapcar (lambda (name)
+             (intern (concat "eterm-256color-bright-" name)))
+           eterm-256color-base16-names)
    (mapcar (lambda (j)
              (intern (concat "eterm-256color-" (number-to-string j))))
            (number-sequence 16 255))))
