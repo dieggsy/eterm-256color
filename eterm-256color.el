@@ -131,7 +131,7 @@ Bold colors will be rendered as bright instead."
              (intern (concat "eterm-256color-" (number-to-string j))))
            (number-sequence 16 255))))
 
-(defvar term-terminal-previous-parameter)
+(defvar term-terminal-previous-parameter -1)
 (defvar term-terminal-previous-parameter-2 -1)
 
 (defun eterm-256color-handle-colors (parameter)
