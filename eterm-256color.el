@@ -298,7 +298,7 @@ Term may need to be restarted. Compile now? ")
                                   "eterm-256color.el")))
               (setq package-path (locate-library "eterm-256color.el")))
             (compilation-start
-             (format "tic -s %s" (expand-file-name
+             (format "tic -s '%s'" (expand-file-name
                                   "eterm-256color.ti"
                                   (file-name-directory package-path))))))
       (when (y-or-n-p "It seems you don't have the required term type 'eterm-color'.
