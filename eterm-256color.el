@@ -148,7 +148,9 @@ Bold colors will be rendered as bright instead."
              (t
               (eterm-256color-handle-colors p0)
               (setq params (cdr params))))))
-      (apply handle-fun (list proc params char)))))
+      (apply handle-fun (if (cddr args)
+                            (list proc params char)
+                          (list proc char))))))
 
 (defun eterm-256color-handle-colors (parameter &optional layer256)
   "Handle color sequences specified by PARAMETER.
