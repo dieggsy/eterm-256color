@@ -235,10 +235,10 @@ This function supports 256 color sequences and bright colors."
         (let ((color
                (if term-ansi-current-reverse
                    (face-foreground
-                    (elt eterm-256color-vector term-ansi-current-color)
+                    (elt eterm-256color-vector (or term-ansi-current-color 0))
                     nil 'default)
                  (face-background
-                  (elt eterm-256color-vector term-ansi-current-bg-color)
+                  (elt eterm-256color-vector (or term-ansi-current-bg-color 0))
                   nil 'default))))
           (setq term-current-face
                 (list :background color
@@ -247,11 +247,11 @@ This function supports 256 color sequences and bright colors."
       (setq term-current-face
             (list :foreground
               (face-foreground
-               (elt eterm-256color-vector term-ansi-current-color)
+               (elt eterm-256color-vector (or term-ansi-current-color 0))
                nil 'default)
               :background
               (face-background
-               (elt eterm-256color-vector term-ansi-current-bg-color)
+               (elt eterm-256color-vector (or term-ansi-current-bg-color 0))
                nil 'default)
               :inverse-video term-ansi-current-reverse))
 
